@@ -1,0 +1,39 @@
+server:
+  port: 7777
+
+spring:
+  application:
+    name: projectname-servicename
+  cloud:
+    nacos:
+      # discovery: Nacos作为注册中心的配置项，对应 NacosDiscoveryProperties 配置类
+      discovery:
+        server-addr: 124.223.71.190:8848 # Nacos服务器地址
+        service: ${spring.application.name} # 注册到 Nacos 的服务名
+        namespace: dev
+        register-enabled: false # false则为只发现但不注册服务
+  datasource:
+    url: jdbc:mysql://124.223.71.190:3306/databasename?useUnicode=true&characterEncoding=UTF8&autoReconnect=true&useSSL=false&serverTimezone=UTC%2B8
+    username: dev
+    password: devpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: true # 显示 sql 语句
+    database-platform: org.hibernate.dialect.MySQL8Dialect #使用 innoDB 引擎
+    hibernate:
+      ddl-auto: update # 根据 model 更新表
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug # 输出 hibernate sql 语句
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace # 输出 sql 参数
+
+mybatis:
+  typeAliasesPackage: link.enshrine.**.dao.model.dto
+  mapperLocations: classpath*:mapper/*.xml,classpath*:mapper/*/*.xml,classpath*:mapper/*/*/*.xml

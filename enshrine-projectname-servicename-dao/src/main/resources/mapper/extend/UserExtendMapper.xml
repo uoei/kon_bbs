@@ -8,5 +8,8 @@
     insert into bbs_user(`id`,username,`password`,email,address,birthday,portrait,`status`)
     values (#{id,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{portrait,jdbcType=VARCHAR},1)
   </insert>
+  <select id="selectUserByUsername" resultType="link.enshrine.projectname.servicename.dao.model.dto.User">
+    select us.id,us.password,us.username,us.email,us.address,us.birthday,us.portrait,us.status from bbs_user us where us.username = #{username,jdbcType=VARCHAR};
+  </select>
 
 </mapper>

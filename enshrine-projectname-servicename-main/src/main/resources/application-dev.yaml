@@ -39,3 +39,8 @@ logging:
 mybatis:
   typeAliasesPackage: link.enshrine.**.dao.model.dto
   mapperLocations: classpath*:mapper/*.xml,classpath*:mapper/*/*.xml,classpath*:mapper/*/*/*.xml
+
+lettuce:
+  single:
+    host:
+      172.155.2.1

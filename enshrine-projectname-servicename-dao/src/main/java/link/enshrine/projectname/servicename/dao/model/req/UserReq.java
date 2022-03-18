@@ -37,4 +37,9 @@ public class UserReq {
      */
     private String portrait;
 
+    /**
+     * 密钥
+     */
+    private String token;
+
 }

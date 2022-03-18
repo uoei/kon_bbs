@@ -16,7 +16,7 @@ public class UserRes {
     /**
      * 密码
      */
-    private String password;
+
 
     /**
      * 邮箱
@@ -37,5 +37,10 @@ public class UserRes {
      * 头像
      */
     private String portrait;
+
+    /**
+     * Token
+     */
+    private String token;
 
 }

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 @Slf4j
 public class UserController {
-    @Autowired
-    private final UserService userService;
 
+    private final UserService userService;
+    @Autowired
     public UserController (UserService userService){this.userService=userService;}
     @PostMapping("/register")
     public Result<Void> register(@RequestBody UserReq userReq){

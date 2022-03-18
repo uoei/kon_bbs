@@ -1,7 +1,11 @@
 package link.enshrine.projectname.servicename.api.service.impl;
 
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisCommands;
 import link.enshrine.framework.common.exception.DemoException;
 import link.enshrine.projectname.servicename.api.service.UserService;
+import link.enshrine.projectname.servicename.api.utils.TokenUtils;
 import link.enshrine.projectname.servicename.dao.access.UserDao;
 import link.enshrine.projectname.servicename.dao.model.dto.User;
 import link.enshrine.projectname.servicename.dao.model.req.UserReq;
@@ -22,6 +26,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserReq userReq) {
+        User user = userDao.selectUserByUsername(userReq.getUsername());
+        if (user != null) {
+            throw new DemoException("用户名已存在");
+        }
         String uuid = UUID.randomUUID().toString();
         userReq.setId(uuid);
         userDao.addUser(userReq);
@@ -40,6 +48,20 @@ public class UserServiceImpl implements UserService {
         }
         userRes = new UserRes();
         BeanUtils.copyProperties(user,userRes);
+        String token = TokenUtils.generateToken(user);
+        userRes.setToken(token);
+
+        RedisClient redisClient = RedisClient.create("redis://124.223.71.190:6371");
+        StatefulRedisConnection<String, String> connect = redisClient.connect();
+        RedisCommands<String, String> syncCommands = connect.sync();
+
+
+
+
+        syncCommands.hset("token",user.getUsername(),token);
+        connect.close();
+        redisClient.shutdown();
+
         return userRes;
     }
 }
